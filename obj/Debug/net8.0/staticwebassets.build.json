@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "pdoBbL6T+JEzyiYHpqdz2sim0A1yVwDguS3tH6Dttpc=",
+  "Source": "webapi_blazor",
+  "BasePath": "_content/webapi_blazor",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "webapi_blazor/wwwroot",
+      "Source": "webapi_blazor",
+      "ContentRoot": "/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/wwwroot/",
+      "BasePath": "_content/webapi_blazor",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
