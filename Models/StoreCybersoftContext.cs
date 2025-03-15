@@ -11,7 +11,7 @@ namespace webapi_blazor.Models {
             optionsBuilder.UseSqlServer("Server=127.0.0.1,1433;Database=StoreCybersoft;User Id=sa;Password=khaicybersoft2109@;TrustServerCertificate=True;");
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductStore> Products { get; set; }
 
     }
 }

@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using webapi_blazor.models.EbayDB;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +11,20 @@ builder.Services.AddControllers();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+// Đọc connection string từ appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("EbayConnection");
+//Kết nối db
+builder.Services.AddDbContext<EbayContext>(options =>options.UseSqlServer(connectionString));
+//Kết nối db 2 
+// builder.Services.AddDbContext<EbayContextExtend>(options =>options.UseSqlServer(connectionString));
+//DI service Auto mapper
+builder.Services.AddAutoMapper(typeof(Program));
+
+
+
+
+
+
 //-----------------------------------------------------------------------------
 
 

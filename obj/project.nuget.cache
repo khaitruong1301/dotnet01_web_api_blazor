@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "SSgyMr1rHRQ=",
+  "dgSpecHash": "E7FSY3MQrUc=",
   "success": true,
   "projectFilePath": "/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/webapi_blazor.csproj",
   "expectedPackageFiles": [
+    "/Users/khai/.nuget/packages/automapper/14.0.0/automapper.14.0.0.nupkg.sha512",
     "/Users/khai/.nuget/packages/azure.core/1.25.0/azure.core.1.25.0.nupkg.sha512",
     "/Users/khai/.nuget/packages/azure.identity/1.7.0/azure.identity.1.7.0.nupkg.sha512",
     "/Users/khai/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
