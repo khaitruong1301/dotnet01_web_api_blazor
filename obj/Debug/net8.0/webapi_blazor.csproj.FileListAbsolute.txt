@@ -147,3 +147,5 @@
 /Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/obj/Debug/net8.0/webapi_blazor.genruntimeconfig.cache
 /Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/obj/Debug/net8.0/ref/webapi_blazor.dll
 /Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/AutoMapper.dll
+/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/BCrypt.Net-Next.dll
+/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll

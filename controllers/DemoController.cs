@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi_blazor.Models;
@@ -12,6 +13,7 @@ namespace webapi_blazor.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("allow_GET")]
     public class DemoController : ControllerBase
     {
         private readonly StoreCybersoftContext _context = new StoreCybersoftContext();
@@ -19,6 +21,25 @@ namespace webapi_blazor.Controllers
         {
             // _context = db;
         }
+
+        [HttpPost("post")]
+        public async Task<IActionResult> post() {
+            
+         
+
+            return Ok("post ok");
+        }
+
+        [HttpGet("HandleUser")]
+        public async Task<IActionResult> HandleUser() {
+            
+            int b = 0;
+            int res = 10 / b;
+
+            return Ok(res);
+        }
+
+
 
         [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll()
