@@ -19,7 +19,11 @@ public partial class EbayContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<Client> Clients { get; set; }
+
     public virtual DbSet<ConnectionCountLog> ConnectionCountLogs { get; set; }
+
+    public virtual DbSet<EbayProduct> EbayProducts { get; set; }
 
     public virtual DbSet<GetListOrderDetailByOrderId> GetListOrderDetailByOrderIds { get; set; }
 
@@ -41,6 +45,8 @@ public partial class EbayContext : DbContext
 
     public virtual DbSet<Rating> Ratings { get; set; }
 
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<RoleGroup> RoleGroups { get; set; }
@@ -48,6 +54,8 @@ public partial class EbayContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserGroup> UserGroups { get; set; }
+
+    public virtual DbSet<UserRole> UserRoles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=EbayConnection");
@@ -87,6 +95,35 @@ public partial class EbayContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 
+        modelBuilder.Entity<Client>(entity =>
+        {
+            entity.HasKey(e => e.ClientId).HasName("PK__Clients__BF21A4245908514E");
+
+            entity.Property(e => e.ClientId)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("client_id");
+            entity.Property(e => e.ClientName)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("client_name");
+            entity.Property(e => e.ClientType)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("client_type");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Description)
+                .HasColumnType("text")
+                .HasColumnName("description");
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("updated_at");
+        });
+
         modelBuilder.Entity<ConnectionCountLog>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Connecti__3214EC07B4A9F9E4");
@@ -101,6 +138,18 @@ public partial class EbayContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.IpAddress).HasMaxLength(45);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<EbayProduct>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("EbayProduct");
+
+            entity.Property(e => e.Category).HasMaxLength(100);
+            entity.Property(e => e.Image).HasMaxLength(255);
+            entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.ProductName).HasMaxLength(100);
         });
 
         modelBuilder.Entity<GetListOrderDetailByOrderId>(entity =>
@@ -308,6 +357,64 @@ public partial class EbayContext : DbContext
                 .HasConstraintName("FK__Ratings__RaterId__5BE2A6F2");
         });
 
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Refresh___3213E83FEC267AF6");
+
+            entity.ToTable("Refresh_tokens");
+
+            entity.HasIndex(e => e.Token, "UQ__Refresh___CA90DA7A4B1BDF21").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ClientId)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("client_id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Deleted)
+                .HasDefaultValue((byte)0)
+                .HasColumnName("deleted");
+            entity.Property(e => e.DeviceId)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("device_id");
+            entity.Property(e => e.DeviceName)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("device_name");
+            entity.Property(e => e.DeviceOs)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("device_os");
+            entity.Property(e => e.DeviceType)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("device_type");
+            entity.Property(e => e.ExpiresAt)
+                .HasColumnType("datetime")
+                .HasColumnName("expires_at");
+            entity.Property(e => e.IpAddress)
+                .HasMaxLength(45)
+                .IsUnicode(false)
+                .HasColumnName("ip_address");
+            entity.Property(e => e.Token)
+                .HasMaxLength(500)
+                .HasColumnName("token");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.Client).WithMany(p => p.RefreshTokens)
+                .HasForeignKey(d => d.ClientId)
+                .HasConstraintName("FK__Refresh_t__clien__55009F39");
+
+            entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Refresh_t__user___540C7B00");
+        });
+
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC074F1993A2");
@@ -334,21 +441,13 @@ public partial class EbayContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Deleted).HasDefaultValue(false);
-
-            entity.HasOne(d => d.Group).WithMany(p => p.RoleGroups)
-                .HasForeignKey(d => d.GroupId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__RoleGroup__Group__02084FDA");
-
-            entity.HasOne(d => d.Role).WithMany(p => p.RoleGroups)
-                .HasForeignKey(d => d.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__RoleGroup__RoleI__01142BA1");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07498664A6");
+
+            entity.HasIndex(e => e.FullName, "IX_Users_FullName");
 
             entity.HasIndex(e => e.Username, "UQ__Users__536C85E491807BE2").IsUnique();
 
@@ -376,16 +475,25 @@ public partial class EbayContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Deleted).HasDefaultValue(false);
+        });
 
-            entity.HasOne(d => d.Group).WithMany(p => p.UserGroups)
-                .HasForeignKey(d => d.GroupId)
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.RoleId });
+
+            entity.ToTable("UserRole");
+
+            entity.Property(e => e.Description).HasMaxLength(255);
+
+            entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
+                .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UserGroup__Group__7B5B524B");
+                .HasConstraintName("FK_UserRole_Roles");
 
-            entity.HasOne(d => d.User).WithMany(p => p.UserGroups)
+            entity.HasOne(d => d.User).WithMany(p => p.UserRoles)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UserGroup__UserI__7A672E12");
+                .HasConstraintName("FK_UserRole_Users");
         });
 
         OnModelCreatingPartial(modelBuilder);
