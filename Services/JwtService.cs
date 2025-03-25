@@ -18,7 +18,7 @@ public class JwtAuthService
         _context = db;
     }
     
-    public string GenerateToken(webapi_blazor.models.EbayDB.User userLogin)
+    public string GenerateToken(User userLogin)
     {
         // Khóa bí mật để ký token
         var key = Encoding.ASCII.GetBytes(_key);
