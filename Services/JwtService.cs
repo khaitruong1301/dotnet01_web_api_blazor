@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using webapi_blazor.models.EbayDB;
 
@@ -18,10 +19,13 @@ public class JwtAuthService
         _context = db;
     }
     
-    public string GenerateToken(User userLogin)
+    public string GenerateToken(webapi_blazor.models.EbayDB.User userLogin)
     {
         // Khóa bí mật để ký token
         var key = Encoding.ASCII.GetBytes(_key);
+
+         //Add role vào token 
+      
         // Tạo danh sách các claims cho token
         var claims = new List<Claim>
         {
@@ -30,9 +34,18 @@ public class JwtAuthService
             new Claim(JwtRegisteredClaimNames.Sub, userLogin.Username),   // Subject của token
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Unique ID của token
             new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()), // Thời gian tạo token
-            new Claim(JwtRegisteredClaimNames.Email, userLogin.Email) // Thời gian tạo token
+            new Claim(JwtRegisteredClaimNames.Email, userLogin.Email), // Thời gian tạo token
+       
         };
-        //Add role vào token 
+        //   List<string> lstRole = new List<string>();
+        // var userRoles = _context.Database.SqlQueryRaw<string>($@"SELECT Roles.RoleName FROM Roles, Users, UserRole where UserRole.UserId = Users.id and Roles.Id = UserRole.RoleId and Users.Id = {userLogin.Id}").ToList();
+        // foreach(var item in userRoles){
+        //     claims.Add(new Claim(ClaimTypes.Role, item));
+        // }
+        var userRoles = _context.UserRoles.Where(us => us.UserId == userLogin.Id).ToList();
+        foreach(var item in userRoles){
+            claims.Add(new Claim(ClaimTypes.Role, item.Role.RoleName));
+        }
 
 
         // Tạo khóa bí mật để ký token

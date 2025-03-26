@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using webapi_blazor.Filter;
 using webapi_blazor.Helper;
 using webapi_blazor.models.EbayDB;
 
@@ -18,7 +19,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-
     // 🔥 Thêm hỗ trợ Authorization header tất cả api
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -50,13 +50,12 @@ builder.Services.AddSwaggerGen(options =>
 
 
 builder.Services.AddControllers();
-
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 // Đọc connection string từ appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("EbayConnection");
 //Kết nối db
-builder.Services.AddDbContext<EbayContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<EbayContext>(options => options.UseLazyLoadingProxies().UseSqlServer(connectionString));
 //Kết nối db 2 
 // builder.Services.AddDbContext<EbayContextExtend>(options =>options.UseSqlServer(connectionString));
 //DI service Auto mapper
@@ -118,7 +117,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 // Thêm dịch vụ Authorization để hỗ trợ phân quyền người dùng
 builder.Services.AddAuthorization();
 
-
+//filter
+builder.Services.AddScoped<Authorize_Thuan>();
 
 
 //-----------------------------------------------------------------------------
@@ -148,10 +148,12 @@ if (app.Environment.IsDevelopment())
 //         await context.Response.WriteAsJsonAsync(errorResponse);
 //     });
 // });
-//middle ware cors
-app.UseCors("allow_origin");
 //Xác thực
 app.UseRouting(); //routing của blazor server và api
+//middle ware cors
+
+app.UseCors("allow_origin");
+
 app.UseAuthentication();
 app.UseAuthorization();
 

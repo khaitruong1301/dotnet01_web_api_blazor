@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi_blazor.Models;
+using webapi_blazor.Filter;
 //using webapi_blazor.Models;
 
 namespace webapi_blazor.Controllers
@@ -21,10 +22,11 @@ namespace webapi_blazor.Controllers
         {
             // _context = db;
         }
-
+        [DemoFilter(abc = "123")]
+        [ServiceFilter(typeof(Authorize_Thuan))]
         [HttpPost("post")]
         public async Task<IActionResult> post() {
-            
+            //action handler
          
 
             return Ok("post ok");
@@ -123,4 +125,6 @@ namespace webapi_blazor.Controllers
     
 
     }
+
+
 }
