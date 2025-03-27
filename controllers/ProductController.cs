@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 using webapi_blazor.models.EbayDB;
 using webapi_blazor.Models.ViewModel;
@@ -30,6 +31,7 @@ namespace webapi_blazor.Controllers
 
         [Authorize(Roles ="Seller")]
         [HttpGet("/product/getall")]
+        [OutputCache(Duration = 60, VaryByHeaderNames = new[] { "Authorization" })]
         public async Task<IActionResult> getAll(int pageIndex = 0, int pageSize = 10)
         {
             //linq

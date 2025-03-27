@@ -42,7 +42,7 @@ public class JwtAuthService
         // foreach(var item in userRoles){
         //     claims.Add(new Claim(ClaimTypes.Role, item));
         // }
-        var userRoles = _context.UserRoles.Where(us => us.UserId == userLogin.Id).ToList();
+        var userRoles = _context.UserRoles.Include(n=>n.Role).Where(us => us.UserId == userLogin.Id).ToList();
         foreach(var item in userRoles){
             claims.Add(new Claim(ClaimTypes.Role, item.Role.RoleName));
         }

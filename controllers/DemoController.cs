@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi_blazor.Models;
 using webapi_blazor.Filter;
+using Microsoft.AspNetCore.OutputCaching;
+using webapi_blazor.models.EbayDB;
 //using webapi_blazor.Models;
 
 namespace webapi_blazor.Controllers
@@ -18,37 +20,47 @@ namespace webapi_blazor.Controllers
     public class DemoController : ControllerBase
     {
         private readonly StoreCybersoftContext _context = new StoreCybersoftContext();
-        public DemoController()
+        private readonly EbayContext db;
+
+        public DemoController(EbayContext dbo)
         {
+            db = dbo;
             // _context = db;
         }
         [DemoFilter(abc = "123")]
-        [ServiceFilter(typeof(Authorize_Thuan))]
-        [HttpPost("post")]
-        public async Task<IActionResult> post() {
+        [HttpPost("post/{id}")]
+        public async Task<IActionResult> post([FromHeader] string token, [FromRoute] string id, [FromBody] User us)
+        {
             //action handler
-         
+            Console.Write("dsadsa");
 
             return Ok("post ok");
         }
 
         [HttpGet("HandleUser")]
-        public async Task<IActionResult> HandleUser() {
-            
+        public async Task<IActionResult> HandleUser()
+        {
             int b = 0;
             int res = 10 / b;
-
             return Ok(res);
         }
 
 
 
         [HttpGet("GetAll")]
+        [OutputCache(Duration = 30)]
         public async Task<ActionResult> GetAll()
         {
-            List<User> lstUser = _context.Users.ToList();
+            var lstUser = await db.Users.AsNoTracking().Select(u => new
+            {
+                u.Id,
+                u.FullName,
+            }).ToListAsync();
             return Ok(lstUser);
         }
+
+
+
         [HttpGet("GetAllSQLRaw")]
         public async Task<ActionResult> GetAllSQLRaw()
         {
@@ -58,7 +70,7 @@ namespace webapi_blazor.Controllers
 
         [HttpPost("AddUser")]
         public async Task<ActionResult> AddUser([FromBody] User newUser)
-        {  
+        {
             //linq:
             _context.Users.Add(newUser);
             _context.SaveChanges(); //Lưu vào db thật
@@ -66,7 +78,7 @@ namespace webapi_blazor.Controllers
         }
         [HttpPost("AddUserRaw")]
         public async Task<ActionResult> AddUserRaw([FromBody] User newUser)
-        {  
+        {
             string sqlCommand = $"INSERT INTO Users(Name,Age,Email,Additional) values(N'{newUser.Name}','{newUser.Age}','{newUser.Email}','{newUser.Additional}')";
             //linq:
             _context.Database.ExecuteSqlRaw(sqlCommand);
@@ -74,17 +86,18 @@ namespace webapi_blazor.Controllers
         }
 
         [HttpDelete("/delete/{id}")]
-        public async Task<ActionResult> DeleteUser([FromRoute]int id)
+        public async Task<ActionResult> DeleteUser([FromRoute] int id)
         {
             User? usDelete = _context.Users.Find(id);
-            if (usDelete != null){
+            if (usDelete != null)
+            {
                 _context.Users.Remove(usDelete);
                 _context.SaveChanges();
             }
             return Ok(_context.Users.ToList());
         }
         [HttpDelete("/deleteraw/{id}")]
-        public async Task<ActionResult> Deleteraw([FromRoute]int id)
+        public async Task<ActionResult> Deleteraw([FromRoute] int id)
         {
             // _context.Database.BeginTransaction();
             string sqlCommand = $"DELETE FROM Users where Id={id}";
@@ -97,7 +110,7 @@ namespace webapi_blazor.Controllers
 
 
         [HttpPut("/edit/{id}")]
-        public async Task<IActionResult> Update([FromRoute]int id,[FromBody] User userEdit)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] User userEdit)
         {
             _context.Entry(userEdit).State = EntityState.Modified;
             _context.SaveChanges();
@@ -105,11 +118,12 @@ namespace webapi_blazor.Controllers
         }
 
         [HttpPut("/update/{id}")]
-        public async Task<IActionResult> UpdateUser([FromRoute]int id,[FromBody] User userEdit)
-        {   
+        public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] User userEdit)
+        {
             //Lấy ra thằng user trong csdl
             User? userUpdate = _context.Users.Find(id);
-            if(userUpdate!=null){
+            if (userUpdate != null)
+            {
                 userUpdate.Name = userEdit.Name;
                 userUpdate.Age = userEdit.Age;
                 userUpdate.Email = userEdit.Email;
@@ -121,8 +135,8 @@ namespace webapi_blazor.Controllers
 
 
 
-        
-    
+
+
 
     }
 
