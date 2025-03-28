@@ -108,7 +108,15 @@ namespace webapi_blazor.Controllers
             return Ok(res);
         }
 
-
+        
+        [HttpGet("/GetAllUserRole")]
+        public async Task<IActionResult> GetAllUserRole() {
+            var lstUserRole = _context.UserRoles.Include(p => p.Role).Select(ul => new {
+                id = ul.UserId,
+                Role = ul.Role
+            });
+            return Ok(lstUserRole);
+        }
 
 
     }

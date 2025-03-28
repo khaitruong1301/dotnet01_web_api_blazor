@@ -1,6 +1,7 @@
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +56,7 @@ builder.Services.AddServerSideBlazor();
 // Đọc connection string từ appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("EbayConnection");
 //Kết nối db
-builder.Services.AddDbContext<EbayContext>(options => options.UseLazyLoadingProxies().UseSqlServer(connectionString));
+builder.Services.AddDbContext<EbayContext>(options => options.UseLazyLoadingProxies(false).UseSqlServer(connectionString));
 //Kết nối db 2 
 // builder.Services.AddDbContext<EbayContextExtend>(options =>options.UseSqlServer(connectionString));
 //DI service Auto mapper
@@ -119,7 +120,10 @@ builder.Services.AddAuthorization();
 
 //filter
 builder.Services.AddScoped<Authorize_Thuan>();
-
+builder.Services.AddScoped<LogFilter>();
+builder.Services.AddScoped<FilterDemoAsync>();
+// cache
+builder.Services.AddMemoryCache();
 
 //-----------------------------------------------------------------------------
 
