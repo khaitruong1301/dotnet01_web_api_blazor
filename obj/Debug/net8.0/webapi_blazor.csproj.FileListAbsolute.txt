@@ -151,3 +151,9 @@
 /Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/obj/Debug/net8.0/ref/webapi_blazor.dll
 /Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/Castle.Core.dll
 /Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Proxies.dll
+/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/Microsoft.Extensions.Caching.Abstractions.dll
+/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/Microsoft.Extensions.Caching.StackExchangeRedis.dll
+/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/Microsoft.Extensions.Primitives.dll
+/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
+/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/StackExchange.Redis.dll
+/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/bin/Debug/net8.0/System.Diagnostics.DiagnosticSource.dll

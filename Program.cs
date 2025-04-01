@@ -4,8 +4,10 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 using webapi_blazor.Filter;
 using webapi_blazor.Helper;
 using webapi_blazor.models.EbayDB;
@@ -84,6 +86,54 @@ builder.Services.AddCors(option=>{
 
 });
 // Cấu hình authentication của jwt
+
+
+//Cấu hình redis
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = "localhost:6379"; // hoặc connection string từ Cloud
+    options.InstanceName = "MyApp:";
+});
+
+
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var configuration = builder.Configuration.GetConnectionString("ConnectionRedis") ?? "localhost:6379";
+    return ConnectionMultiplexer.Connect(configuration);
+});
+
+// Repository & unit of work pattern 
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
+builder.Services.AddScoped<IProductService,ProductService>();
+
+
+
+
+// Lấy cấu hình từ appsettings.json trực tiếp
+// var redisHost = builder.Configuration["Redis:Host"];
+// var redisPort = builder.Configuration["Redis:Port"];
+// var redisPassword = builder.Configuration["Redis:Password"];
+// var redisDb = int.Parse(builder.Configuration["Redis:Database"]);
+// var redisSsl = bool.Parse(builder.Configuration["Redis:Ssl"] ?? "false");
+
+// // Cấu hình Redis bằng ConnectionMultiplexer
+// builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
+// {
+//     var config = new ConfigurationOptions
+//     {
+//         EndPoints = { $"{redisHost}:{redisPort}" },
+//         Password = string.IsNullOrWhiteSpace(redisPassword) ? null : redisPassword,
+//         DefaultDatabase = redisDb,
+//         Ssl = redisSsl,
+//         AbortOnConnectFail = false
+//     };
+
+//     return ConnectionMultiplexer.Connect(config);
+// });
+
+
 //Thêm middleware authentication
 var privateKey = builder.Configuration["jwt:Serect-Key"];
 var Issuer = builder.Configuration["jwt:Issuer"];
