@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("webapi_blazor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df64992418be554c3776cd970ba4f0b5b0c839dd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b65275013e60a04862b4b645a6d2b1ed4180d34")]
 [assembly: System.Reflection.AssemblyProductAttribute("webapi_blazor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("webapi_blazor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

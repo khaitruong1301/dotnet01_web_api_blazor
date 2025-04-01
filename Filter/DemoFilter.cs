@@ -38,10 +38,7 @@ public class DemoFilter : ActionFilterAttribute
         // // var cookie = context.HttpContext.Request.Cookies["id"].First();
         // var body = new StreamReader(context.HttpContext.Request.Body);
         // var data =  await body.ReadToEndAsync();
-
-
     }
-
-
-  
 }
+
+
