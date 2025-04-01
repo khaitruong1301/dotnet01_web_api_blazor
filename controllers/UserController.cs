@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 using webapi_blazor.Helper;
 using webapi_blazor.models.EbayDB;
@@ -43,6 +44,7 @@ namespace webapi_blazor.Controllers
             return BadRequest("Tài khoản mật khẩu không đúng!");
         }
         [Authorize]
+        [OutputCache(Duration =60, VaryByHeaderNames = new [] { "Authorization"})]
         [HttpGet("/user/GetProfile")]
         public async Task<ActionResult> GetProfile([FromHeader]string authorization) {
             string token = authorization.Replace("Bearer ",""); 

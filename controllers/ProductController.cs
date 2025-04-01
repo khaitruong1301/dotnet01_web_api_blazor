@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 using webapi_blazor.models.EbayDB;
 using webapi_blazor.Models.ViewModel;
@@ -60,6 +61,7 @@ namespace webapi_blazor.Controllers
         }
 
         [HttpGet("/product/getbyid/{id}")]
+        [OutputCache(Duration =60 , VaryByRouteValueNames = new [] {"id"})]
         public async Task<IActionResult> getById([FromRoute] int id)
         {
             var productDetail = _context.Products.SingleOrDefault(prod => prod.Id == id);
