@@ -49,8 +49,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
-
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -137,6 +135,14 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp => {
 });
 
 builder.Services.AddSingleton<RedisHelper>();
+//Repository pattern & unit of work pattern
+//repo
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+//unit
+builder.Services.AddScoped<UnitOfWork>();
+//service
+builder.Services.AddScoped<IProductService, ProductService>();
+
 
 
 
