@@ -18,7 +18,6 @@ namespace Middleware.Middleware
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-
             // var ip = context.Connection.RemoteIpAddress?.ToString(); // ::1
             // if (!string.IsNullOrEmpty(ip) && ip == "::1")
             // {
@@ -27,7 +26,6 @@ namespace Middleware.Middleware
             //     return;
             // }
             await next(context);
-
             // await next(context);
         }
     }

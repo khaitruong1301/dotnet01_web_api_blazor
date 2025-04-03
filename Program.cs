@@ -55,7 +55,7 @@ builder.Services.AddServerSideBlazor();
 // Đọc connection string từ appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("EbayConnection");
 //Kết nối db
-builder.Services.AddDbContext<EbayContext>(options => options.UseLazyLoadingProxies(false).UseSqlServer(connectionString));
+builder.Services.AddDbContext<EbayContext>(options => options.UseSqlServer(connectionString));
 //Kết nối db 2 
 // builder.Services.AddDbContext<EbayContextExtend>(options =>options.UseSqlServer(connectionString));
 //DI service Auto mapper
@@ -138,10 +138,12 @@ builder.Services.AddSingleton<RedisHelper>();
 //Repository pattern & unit of work pattern
 //repo
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 //unit
-builder.Services.AddScoped<UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 //service
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 

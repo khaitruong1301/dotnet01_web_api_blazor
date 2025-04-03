@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "vr4jjkYW/xm71/FzshvOhvSGxCzvwR9MMNmfRCmR9Ng=",
+  "Source": "webapi_blazor",
+  "BasePath": "_content/webapi_blazor",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "webapi_blazor/wwwroot",
+      "Source": "webapi_blazor",
+      "ContentRoot": "/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/wwwroot/",
+      "BasePath": "_content/webapi_blazor",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/wwwroot/css/index.css",
+      "SourceId": "webapi_blazor",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Volumes/Cybersoft/DotNet01/dot_net_api_blazor/webapi_blazor/wwwroot/",
+      "BasePath": "_content/webapi_blazor",
+      "RelativePath": "css/index.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/index.css"
+    }
+  ]
+}

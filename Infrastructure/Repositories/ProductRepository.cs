@@ -19,10 +19,13 @@ public class ProductRepository : IProductRepository
     {
         _context = context;
     }
-    public async Task<IEnumerable<Product>> GetAllAsync()
+    public async Task<IEnumerable<webapi_blazor.models.EbayDB.Product>> GetAllAsync()
     {
-        return await _context.Set<Product>().ToListAsync();
+        IEnumerable<webapi_blazor.models.EbayDB.Product> products =  _context.Products.Skip(0).Take(10);
+        return products;
     }
+
+    
     public async Task<Product?> GetByIdAsync(int id)
     {
         return await _context.Set<Product>().FindAsync(id);
